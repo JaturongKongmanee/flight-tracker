@@ -12,9 +12,8 @@ function loadFlightData(flight) {
 };
 
 function setUpFlightToGetData() {
-        //const flightList = ['ca979', 'zh9003'];
-        flightList.forEach( x => loadFlightData(x));
-        console.log(flightList);
+    flightList.forEach( x => loadFlightData(x));
+    console.log(flightList);
 };
 
 function getCurrentDate() {
@@ -40,18 +39,18 @@ function formatTime(tms) {
 
 function displayFlightInfo(data) {
     const t = JSON.parse(data.response);
-    //console.log(t);
     const finalResult = t.result.response.data[t.result.response.data.length - 1];
-
+    
     const flightProperties = {
         currentDate: getCurrentDate(),
         originName: finalResult.airport.origin.position.country.name,
         destinationName: finalResult.airport.destination.position.country.name,
         aircraftModel: finalResult.aircraft.model.text,
-        timestamp: formatTime(t.result.response.timestamp),
-        sta: 'sta',
-        atd: 'atd',
-        status:'status',
+        ScheduledDeparture: formatTime(finalResult.time.scheduled.departure),
+        RealDeparture: formatTime(finalResult.time.real.departure),
+        ScheduledArrival: formatTime(finalResult.time.scheduled.arrival),
+        RealArrival: formatTime(finalResult.time.real.arrival),
+        Status: finalResult.status.generic.status.text,
     };
 
     const mainTable = document.querySelector('#main-table');
@@ -59,33 +58,28 @@ function displayFlightInfo(data) {
     const flightSectionId = document.querySelector(`#${flightCode}`);
     const flightObjKeys = Object.keys(flightProperties);
 
-    //console.log(mainTable.children.length);
-
     if (flightSectionId !== null) {
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 9; i++) {
             flightSectionId.children[i].innerHTML = flightProperties[flightObjKeys[i]]
         }
     } else {
-        //console.log(`new row ${mainTable.children[0].children.length}`);
         const row = mainTable.insertRow(mainTable.children[0].children.length);
         row.setAttribute('id', `${flightCode}`);
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 9; i++) {
             row.insertCell(i).innerHTML = flightProperties[flightObjKeys[i]]
         }
     }
 };
 
-//setInterval(setUpFlightToGetData, 10000);
+setInterval(setUpFlightToGetData, 5000);
 
 const searchInput = document.querySelector('.search');
-
 searchInput.addEventListener('keyup', function(e) {
     const inputFlight = e.target.value.toLowerCase();
     if (e.keyCode === 13 && !flightList.includes(inputFlight)) {
         document.querySelector('.output').innerHTML = `${e.keyCode} ${e.target.value}`;
         flightList.push(inputFlight);
         setUpFlightToGetData();
-        searchInput.value = '';
         searchInput.style.placeholder = 'Flight no. ...';
     }
 });
