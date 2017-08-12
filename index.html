@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+    <div class="search-form">
+        <input type="text" class="search" placeholder="Flight no. ...">
+    </div>
+    <table id="main-table">
+        <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Aircraft</th>
+            <th>STD</th>
+            <th>ATD</th>
+            <th>STA</th>
+            <th>Status</th>
+        </tr>
+    </table>
+
+    <div class="output"></div>
+    
+
+    <script src='./main.js'></script>
+</body>
+</html>
